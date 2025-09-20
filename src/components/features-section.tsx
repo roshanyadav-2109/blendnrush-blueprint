@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import featureBlend from "@/assets/feature-blend.jpg";
+import featureBlend from "@/assets/WhatsApp Image 2025-09-21 at 00.40.19_d930aaff.jpg";
 import featureJuice from "@/assets/feature-juice.jpg";
 import featureGrind from "@/assets/feature-grind.jpg";
 
