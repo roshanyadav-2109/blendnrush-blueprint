@@ -1,26 +1,23 @@
 import { Card, CardContent } from "@/components/ui/card";
-import featureBlend from "@/assets/feature-blend.jpg";
-import featureJuice from "@/assets/feature-juice.jpg";
-import featureGrind from "@/assets/feature-grind.jpg";
 
 export function FeaturesSection() {
   const features = [
     {
       title: "Silky Smoothies & Shakes",
       description: "A powerful motor and 6-point blade system turn fruit, ice, and powders into perfectly smooth drinks in seconds.",
-      image: featureBlend,
+      image: "/assets/feature-blend.jpg",
       stats: "300W Motor • 6-Blade System • 500ml Capacity"
     },
     {
       title: "Fresh Juice, Anywhere",
       description: "A specially designed attachment lets you make vibrant, nutrient-rich juices without the hassle and cleanup of traditional juicers.",
-      image: featureJuice,
+      image: "/assets/feature-juice.jpg",
       stats: "Citrus Specialist • 85% Juice Extraction • Easy Clean"
     },
     {
       title: "Freshly Ground Spices & Coffee",
       description: "The tough grinder base lets you make aromatic spice mixes and freshly ground coffee for the perfect brew.",
-      image: featureGrind,
+      image: "/assets/feature-grind.jpg",
       stats: "Stainless Steel Blades • Fine to Coarse • 50g Capacity"
     }
   ];
