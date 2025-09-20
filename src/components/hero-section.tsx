@@ -9,7 +9,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-muted" />
-      
+
       <div className="container relative z-10 px-4 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
@@ -25,9 +25,38 @@ export function HeroSection() {
                 From silky smoothies to freshly ground spices, discover the versatility of your new kitchen companion.
               </p>
             </div>
-            
 
-          
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                size="lg" 
+                className="text-lg px-8 py-6 shadow-brand hover:shadow-xl transition-all duration-300"
+                onClick={scrollToFeatures}
+              >
+                Explore Features
+                <ArrowDown className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
+
+            <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-success rounded-full"></span>
+                <span>Complete Device</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-success rounded-full"></span>
+                <span>Perfect Smoothies</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-success rounded-full"></span>
+                <span>Fresh Juices</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-success rounded-full"></span>
+                <span>Precision Grinding</span>
+              </div>
+            </div>
+          </div>
+
           {/* Video Player */}
           <div className="relative">
             <video 
