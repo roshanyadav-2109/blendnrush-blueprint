@@ -56,12 +56,13 @@ export function CtaSection() {
   const pricingPlans = [
     {
       title: "Standard Pack",
-      price: "449",
+      price: "549",
       originalPrice: "999",
       features: [
         "BlendNRush All-in-One Device",
         "Blender & Grinder Attachment",
         "Juicer Attachment",
+        "2-Year Warranty",
       ],
       isBestValue: false,
     },
@@ -73,6 +74,7 @@ export function CtaSection() {
         "Everything in Standard Pack",
         "Extra Travel Jar (500ml)",
         "Premium Cleaning Kit",
+        "Extended 3-Year Warranty",
       ],
       isBestValue: true,
     },
@@ -116,12 +118,22 @@ export function CtaSection() {
                     </li>
                   ))}
                 </ul>
-                <Button 
-                  size="lg" 
-                  className={cn("w-full text-lg h-12 font-bold", !plan.isBestValue && "bg-secondary text-secondary-foreground hover:bg-secondary/80")}
-                >
-                  Add to Cart
-                </Button>
+                {plan.title === "Pro Pack" ? (
+                  <Button
+                    size="lg"
+                    className="w-full text-lg h-12 font-bold"
+                    disabled
+                  >
+                    Coming Soon
+                  </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    className={cn("w-full text-lg h-12 font-bold", !plan.isBestValue && "bg-secondary text-secondary-foreground hover:bg-secondary/80")}
+                  >
+                    Add to Cart
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -129,7 +141,7 @@ export function CtaSection() {
         
         <div className="text-center mt-12">
           <p className="text-sm text-muted-foreground">
-            All packages include Free Shipping and Secure Payments.
+            All packages include Free Shipping, a 30-Day Money-Back Guarantee, and Secure Payments.
           </p>
         </div>
       </div>
