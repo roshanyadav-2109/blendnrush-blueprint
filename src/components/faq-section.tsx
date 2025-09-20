@@ -21,15 +21,11 @@ export function FaqSection() {
     },
     {
       question: "What's included in the box?",
-      answer: "You get the main motor unit, blender/grinder jar, juicer attachment, travel lid, cleaning brush, user manual, and a 2-year warranty card. Everything you need to start using all three functions immediately."
+      answer: "You get the main motor unit, blender/grinder jar, juicer attachment, travel lid, cleaning brush and user manual. Everything you need to start using all three functions immediately."
     },
     {
       question: "How long does the battery last?",
       answer: "The rechargeable battery provides up to 15 complete blending cycles or 25 grinding sessions on a single charge. It charges fully in just 2 hours via USB-C cable (included)."
-    },
-    {
-      question: "Is there a warranty?",
-      answer: "Yes! We offer a comprehensive 2-year warranty covering all parts and motor. Plus, we have a 30-day money-back guarantee if you're not completely satisfied."
     }
   ];
 
