@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
-import heroProduct from "@/assets/hero-product.jpg";
 
 export function HeroSection() {
   const scrollToFeatures = () => {
@@ -61,14 +60,13 @@ export function HeroSection() {
             </div>
           </div>
           
+          {/* Video Placeholder in the right column */}
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-primary rounded-full blur-3xl opacity-20 animate-pulse"></div>
-            <img 
-              src={heroProduct}
-              alt="BlendNRush All-in-One Kitchen Appliance"
-              className="relative z-10 w-full h-auto rounded-2xl shadow-xl"
-            />
+            <div className="w-full aspect-video bg-black/80 rounded-2xl shadow-xl flex items-center justify-center">
+              <p className="text-white/70">Your video will be placed here.</p>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
