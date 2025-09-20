@@ -129,7 +129,7 @@ export function CtaSection() {
         
         <div className="text-center mt-12">
           <p className="text-sm text-muted-foreground">
-            All packages include Free Shipping, a 30-Day Money-Back Guarantee, and Secure Payments.
+            All packages include Free Shipping and Secure Payments.
           </p>
         </div>
       </div>
