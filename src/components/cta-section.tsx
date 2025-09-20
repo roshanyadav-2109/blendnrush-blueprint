@@ -56,7 +56,7 @@ export function CtaSection() {
   const pricingPlans = [
     {
       title: "Standard Pack",
-      price: "549",
+      price: "449",
       originalPrice: "999",
       features: [
         "BlendNRush All-in-One Device",
