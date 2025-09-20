@@ -129,7 +129,7 @@ export function CtaSection() {
                     size="lg"
                     className={cn("w-full text-lg h-12 font-bold", !plan.isBestValue && "bg-secondary text-secondary-foreground hover:bg-secondary/80")}
                   >
-                    Add to Cart
+                    Buy Now
                   </Button>
                 )}
               </CardContent>
