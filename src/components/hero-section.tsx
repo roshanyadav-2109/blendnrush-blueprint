@@ -36,26 +36,6 @@ export function HeroSection() {
                 <ArrowDown className="ml-2 h-5 w-5" />
               </Button>
             </div>
-            
-            <div className="flex items-center space-x-6 text-sm text-muted-foreground">
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-success rounded-full"></span>
-                <span>Complete Device</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-success rounded-full"></span>
-                <span>Perfect Smoothies</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-success rounded-full"></span>
-                <span>Fresh Juices</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-success rounded-full"></span>
-                <span>Precision Grinding</span>
-              </div>
-            </div>
-          </div>
           
           {/* Video Player */}
           <div className="relative">
