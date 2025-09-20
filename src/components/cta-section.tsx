@@ -1,60 +1,48 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Check, Shield, Truck, RotateCcw, Star } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Check, Star, BadgePercent } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
-// Countdown Timer Component
 const CountdownTimer = () => {
   const calculateTimeLeft = () => {
     const now = new Date();
     const endOfDay = new Date(now);
-    endOfDay.setHours(23, 59, 59, 999); // Set to the end of the current day
+    endOfDay.setHours(23, 59, 59, 999);
     const difference = endOfDay.getTime() - now.getTime();
-
-    let timeLeft = {};
-
-    if (difference > 0) {
-      timeLeft = {
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-      };
-    } else {
-      timeLeft = { hours: 0, minutes: 0, seconds: 0 };
-    }
-    return timeLeft;
+    return difference > 0 ? {
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    } : { hours: 0, minutes: 0, seconds: 0 };
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
+    const timer = setTimeout(() => setTimeLeft(calculateTimeLeft()), 1000);
     return () => clearTimeout(timer);
   });
 
-  const formatTime = (time) => String(time).padStart(2, '0');
+  const formatTime = (time: number) => String(time).padStart(2, '0');
 
   return (
     <div className="flex justify-center items-center gap-2">
       <div className="text-center">
-        <div className="text-2xl font-bold bg-primary/10 text-primary px-3 py-2 rounded-md">
+        <div className="text-2xl font-bold bg-destructive/10 text-destructive px-3 py-2 rounded-md">
           {formatTime(timeLeft.hours)}
         </div>
         <div className="text-xs text-muted-foreground mt-1">Hours</div>
       </div>
-      <div className="text-2xl font-bold text-primary">:</div>
+      <div className="text-2xl font-bold text-destructive">:</div>
       <div className="text-center">
-        <div className="text-2xl font-bold bg-primary/10 text-primary px-3 py-2 rounded-md">
+        <div className="text-2xl font-bold bg-destructive/10 text-destructive px-3 py-2 rounded-md">
           {formatTime(timeLeft.minutes)}
         </div>
         <div className="text-xs text-muted-foreground mt-1">Minutes</div>
       </div>
-      <div className="text-2xl font-bold text-primary">:</div>
+      <div className="text-2xl font-bold text-destructive">:</div>
       <div className="text-center">
-        <div className="text-2xl font-bold bg-primary/10 text-primary px-3 py-2 rounded-md">
+        <div className="text-2xl font-bold bg-destructive/10 text-destructive px-3 py-2 rounded-md">
           {formatTime(timeLeft.seconds)}
         </div>
         <div className="text-xs text-muted-foreground mt-1">Seconds</div>
@@ -64,96 +52,86 @@ const CountdownTimer = () => {
 };
 
 export function CtaSection() {
-  const features = [
-    "The BlendNRush All-in-One Device",
-    "Blender & Grinder Blade Attachment",
-    "On-the-Go Juicer Attachment",
-    "USB-C Charging Cable",
-    "Free, Fast Shipping Anywhere in India",
-    "30-Day Happiness Guarantee"
-  ];
-
-  const guarantees = [
-    { icon: Truck, text: "Free & Fast Shipping" },
-    { icon: RotateCcw, text: "30-Day Money-Back Guarantee" },
-    { icon: Shield, text: "2-Year Warranty" }
+  const pricingPlans = [
+    {
+      title: "Standard Pack",
+      price: "549",
+      originalPrice: "999",
+      features: [
+        "BlendNRush All-in-One Device",
+        "Blender & Grinder Attachment",
+        "Juicer Attachment",
+        "2-Year Warranty",
+      ],
+      isBestValue: false,
+    },
+    {
+      title: "Pro Pack",
+      price: "749",
+      originalPrice: "1499",
+      features: [
+        "Everything in Standard Pack",
+        "Extra Travel Jar (500ml)",
+        "Premium Cleaning Kit",
+        "Extended 3-Year Warranty",
+      ],
+      isBestValue: true,
+    },
   ];
 
   return (
     <section className="py-20 bg-gradient-muted">
       <div className="container px-4">
-        <div className="max-w-5xl mx-auto">
-          <Card className="border-0 shadow-2xl bg-card/95 backdrop-blur overflow-hidden">
-            <CardContent className="p-6 md:p-12">
-              <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                
-                {/* Left Column: What you get */}
-                <div className="space-y-6">
-                  <h3 className="text-2xl md:text-3xl font-bold text-left">Get Everything You Need to Start</h3>
-                  <p className="text-muted-foreground text-left">
-                    Your BlendNRush comes with everything required to blend, juice, and grind right out of the box.
-                  </p>
-                  <ul className="space-y-3">
-                    {features.map((feature, index) => (
-                      <li key={index} className="flex items-center space-x-3">
-                        <Check className="h-5 w-5 text-success flex-shrink-0" />
-                        <span className="text-left">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="pt-4">
-                    <div className="flex items-center space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 fill-primary text-primary" />
-                      ))}
-                    </div>
-                    <p className="text-sm text-muted-foreground mt-2">"This has replaced three things on my kitchen counter. Absolutely love it." - Rohan P.</p>
-                  </div>
-                </div>
-                
-                {/* Right Column: Offer and CTA */}
-                <div className="space-y-6 p-6 bg-background rounded-xl border">
-                  <div className="text-center space-y-2">
-                    <p className="font-semibold text-primary">Special Welcome Offer</p>
-                    <div className="flex items-baseline justify-center space-x-3">
-                      <span className="text-2xl line-through text-muted-foreground">₹999</span>
-                      <span className="text-5xl font-bold text-foreground">₹549</span>
-                    </div>
-                    <p className="text-sm font-semibold text-success">You Save ₹450 (45% OFF)!</p>
-                  </div>
+        <div className="text-center space-y-4 mb-16">
+          <h2 className="text-4xl font-bold">Choose Your BlendNRush Pack</h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Our welcome offer is ending soon. Select the perfect package to start simplifying your kitchen today.
+          </p>
+          <div className="pt-4">
+            <CountdownTimer />
+          </div>
+        </div>
 
-                  <div className="text-center space-y-2">
-                    <p className="text-sm text-muted-foreground font-medium">Offer ends today!</p>
-                    <CountdownTimer />
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <Button 
-                      size="lg" 
-                      className="w-full text-xl h-14 font-bold shadow-brand hover:shadow-xl transition-all duration-300"
-                    >
-                      Claim My 45% Discount Now
-                    </Button>
-                    <div className="grid grid-cols-3 gap-4 pt-2">
-                      {guarantees.map((guarantee, index) => (
-                        <div key={index} className="text-center space-y-2">
-                          <guarantee.icon className="h-6 w-6 mx-auto text-muted-foreground" />
-                          <span className="text-xs text-muted-foreground">{guarantee.text}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="border-t pt-4 text-center">
-                    <p className="text-sm text-muted-foreground">
-                      Secure Payments • Cash on Delivery Available
-                    </p>
-                  </div>
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
+          {pricingPlans.map((plan) => (
+            <Card key={plan.title} className={cn("shadow-lg relative", plan.isBestValue && "border-primary border-2 shadow-brand")}>
+              {plan.isBestValue && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold flex items-center gap-2">
+                  <Star className="w-4 h-4" />
+                  Best Value
                 </div>
-
-              </div>
-            </CardContent>
-          </Card>
+              )}
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl">{plan.title}</CardTitle>
+                <CardDescription>
+                  <span className="text-4xl font-bold text-foreground">₹{plan.price}</span>
+                  <span className="text-lg text-muted-foreground line-through ml-2">₹{plan.originalPrice}</span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <ul className="space-y-3">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center space-x-3">
+                      <Check className="h-5 w-5 text-success flex-shrink-0" />
+                      <span className="text-muted-foreground">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button 
+                  size="lg" 
+                  className={cn("w-full text-lg h-12 font-bold", !plan.isBestValue && "bg-secondary text-secondary-foreground hover:bg-secondary/80")}
+                >
+                  Add to Cart
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        
+        <div className="text-center mt-12">
+          <p className="text-sm text-muted-foreground">
+            All packages include Free Shipping, a 30-Day Money-Back Guarantee, and Secure Payments.
+          </p>
         </div>
       </div>
     </section>
