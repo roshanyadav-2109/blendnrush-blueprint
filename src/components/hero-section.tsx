@@ -15,14 +15,14 @@ export function HeroSection() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                Your Little Kitchen{" "}
+                See{" "}
                 <span className="bg-gradient-primary bg-clip-text text-transparent">
-                  Magician
+                  BlendNRush
                 </span>
+                {" "}in Action
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
-                Meet the one portable device for your smoothies, fresh juices, and even ground spices. 
-                Healthy living just got a whole lot simpler and less cluttered.
+                From silky smoothies to freshly ground spices, discover the versatility of your new kitchen companion.
               </p>
             </div>
             
@@ -32,39 +32,41 @@ export function HeroSection() {
                 className="text-lg px-8 py-6 shadow-brand hover:shadow-xl transition-all duration-300"
                 onClick={scrollToFeatures}
               >
-                See How It Works
+                Explore Features
                 <ArrowDown className="ml-2 h-5 w-5" />
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="text-lg px-8 py-6 border-2"
-              >
-                Watch Demo
               </Button>
             </div>
             
             <div className="flex items-center space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span className="w-2 h-2 bg-success rounded-full"></span>
-                <span>Free Shipping</span>
+                <span>Complete Device</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="w-2 h-2 bg-success rounded-full"></span>
-                <span>30-Day Returns</span>
+                <span>Perfect Smoothies</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span className="w-2 h-2 bg-success rounded-full"></span>
-                <span>2-Year Warranty</span>
+                <span>Fresh Juices</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-success rounded-full"></span>
+                <span>Precision Grinding</span>
               </div>
             </div>
           </div>
           
-          {/* Video Placeholder in the right column */}
+          {/* Video Player */}
           <div className="relative">
-            <div className="w-full aspect-video bg-black/80 rounded-2xl shadow-xl flex items-center justify-center">
-              <p className="text-white/70">Your video will be placed here.</p>
-            </div>
+            <video 
+              src="/assets/BlendnRush_Portable_Blender_Video.mp4" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+              className="w-full h-auto rounded-2xl shadow-xl"
+            />
           </div>
 
         </div>
