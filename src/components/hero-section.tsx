@@ -36,13 +36,6 @@ export function HeroSection() {
                 See How It Works
                 <ArrowDown className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="text-lg px-8 py-6 border-2"
-              >
-                Watch Demo
-              </Button>
             </div>
             
             <div className="flex items-center space-x-6 text-sm text-muted-foreground">
@@ -65,7 +58,6 @@ export function HeroSection() {
             </div>
           </div>
           
-          {/* Image Display */}
           <div className="relative">
             <img 
               src={heroProduct}
