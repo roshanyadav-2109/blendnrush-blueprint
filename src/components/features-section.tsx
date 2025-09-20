@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import featureBlend from "@/assets/WhatsApp Image 2025-09-21 at 00.40.19_d930aaff.jpg";
 import featureJuice from "@/assets/blend.jpg";
-import featureGrind from "@/assets/feature-grind.jpg";
+import featureGrind from "@/assets/33b1d_512.jpg";
 
 export function FeaturesSection() {
   const features = [
