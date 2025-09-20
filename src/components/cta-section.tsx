@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, Star, BadgePercent } from "lucide-react";
+import { Check, Star } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 const CountdownTimer = () => {
   const calculateTimeLeft = () => {
