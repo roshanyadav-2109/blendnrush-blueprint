@@ -71,7 +71,7 @@ export function TestimonialsSection() {
           </p>
         </div>
         
-        <ContainerScroll className="h-[120vh]">
+        <ContainerScroll className="h-[80vh]">
           <div className="sticky left-0 top-0 h-screen w-full py-12">
             <CardsContainer className="mx-auto size-full max-h-[450px] w-full max-w-[350px]">
               {testimonials.map((testimonial, index) => (
@@ -121,7 +121,7 @@ export function TestimonialsSection() {
           </div>
         </ContainerScroll>
         
-        <div className="text-center -mt-24 md:-mt-48">
+        <div className="text-center -mt-16 md:-mt-24">
           <div className="inline-flex items-center space-x-2 bg-success/10 text-success px-4 py-2 rounded-full">
             <Star className="h-4 w-4 fill-current" />
             <span className="font-semibold">4.9/5 from 2,847+ verified customers</span>
