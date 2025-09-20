@@ -56,13 +56,12 @@ export function CtaSection() {
   const pricingPlans = [
     {
       title: "Standard Pack",
-      price: "549",
+      price: "449",
       originalPrice: "999",
       features: [
         "BlendNRush All-in-One Device",
         "Blender & Grinder Attachment",
         "Juicer Attachment",
-        "2-Year Warranty",
       ],
       isBestValue: false,
     },
@@ -74,7 +73,6 @@ export function CtaSection() {
         "Everything in Standard Pack",
         "Extra Travel Jar (500ml)",
         "Premium Cleaning Kit",
-        "Extended 3-Year Warranty",
       ],
       isBestValue: true,
     },
@@ -141,7 +139,7 @@ export function CtaSection() {
         
         <div className="text-center mt-12">
           <p className="text-sm text-muted-foreground">
-            All packages include Free Shipping, a 30-Day Money-Back Guarantee, and Secure Payments.
+            All packages include Free Shipping, and Secure Payments.
           </p>
         </div>
       </div>
