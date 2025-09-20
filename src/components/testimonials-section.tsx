@@ -71,9 +71,9 @@ export function TestimonialsSection() {
           </p>
         </div>
         
-        <ContainerScroll className="h-[80vh]">
+        <ContainerScroll className="h-[100vh] md:h-[120vh]">
           <div className="sticky left-0 top-0 h-screen w-full py-12">
-            <CardsContainer className="mx-auto size-full max-h-[450px] w-full max-w-[350px]">
+            <CardsContainer className="mx-auto size-full max-h-[450px] w-full max-w-[320px] md:max-w-[350px]">
               {testimonials.map((testimonial, index) => (
                 <CardTransformed
                   arrayLength={testimonials.length}
