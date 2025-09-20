@@ -21,7 +21,7 @@ export function TestimonialsSection() {
       review: "I bought this for smoothies, but the grinder is a game-changer! I make my own garam masala now. So fresh!",
       rating: 5,
       location: "Mumbai",
-      avatarUrl: "https://images.unsplash.com/photo-1494790108755-2616b332c2ed?w=100&h=100&fit=crop&crop=face"
+      avatarUrl: "https://i.pravatar.cc/150?img=1"
     },
     {
       id: "testimonial-2", 
@@ -30,7 +30,7 @@ export function TestimonialsSection() {
       review: "This has replaced three things on my kitchen counter. It's powerful, easy to clean, and looks cute. Absolutely love it.",
       rating: 5,
       location: "Bangalore",
-      avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+      avatarUrl: "https://i.pravatar.cc/150?img=2"
     },
     {
       id: "testimonial-3",
@@ -39,7 +39,7 @@ export function TestimonialsSection() {
       review: "Perfect for our morning routine. I make fresh orange juice, and then my husband grinds his coffee beans with the same device. Incredible.",
       rating: 5,
       location: "Delhi",
-      avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
+      avatarUrl: "https://i.pravatar.cc/150?img=3"
     }
   ];
 
@@ -71,9 +71,9 @@ export function TestimonialsSection() {
           </p>
         </div>
         
-        <ContainerScroll className="h-[300vh]">
-          <div className="sticky left-0 top-0 h-svh w-full py-12">
-            <CardsContainer className="mx-auto size-full h-[450px] w-[350px]">
+        <ContainerScroll className="h-[120vh]">
+          <div className="sticky left-0 top-0 h-screen w-full py-12">
+            <CardsContainer className="mx-auto size-full max-h-[450px] w-full max-w-[350px]">
               {testimonials.map((testimonial, index) => (
                 <CardTransformed
                   arrayLength={testimonials.length}
@@ -121,7 +121,7 @@ export function TestimonialsSection() {
           </div>
         </ContainerScroll>
         
-        <div className="text-center mt-8">
+        <div className="text-center -mt-24 md:-mt-48">
           <div className="inline-flex items-center space-x-2 bg-success/10 text-success px-4 py-2 rounded-full">
             <Star className="h-4 w-4 fill-current" />
             <span className="font-semibold">4.9/5 from 2,847+ verified customers</span>
