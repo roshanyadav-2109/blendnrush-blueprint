@@ -125,12 +125,14 @@ export function CtaSection() {
                     Coming Soon
                   </Button>
                 ) : (
-                  <Button
-                    size="lg"
-                    className={cn("w-full text-lg h-12 font-bold", !plan.isBestValue && "bg-secondary text-secondary-foreground hover:bg-secondary/80")}
-                  >
-                    Buy Now
-                  </Button>
+                  <a href="https://rzp.io/rzp/blendnrush" target="_blank" rel="noopener noreferrer">
+                    <Button
+                      size="lg"
+                      className={cn("w-full text-lg h-12 font-bold", !plan.isBestValue && "bg-secondary text-secondary-foreground hover:bg-secondary/80")}
+                    >
+                      Buy Now
+                    </Button>
+                  </a>
                 )}
               </CardContent>
             </Card>
