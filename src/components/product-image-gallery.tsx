@@ -2,13 +2,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import featureGrind from "@/assets/feature-grind.jpg";
+import heroProduct from "@/assets/hero-product.jpg";
+import featureBlend from "@/assets/feature-blend.jpg";
+import featureJuice from "@/assets/feature-juice.jpg";
+import blendImage from "@/assets/blend.jpg";
 
 const productImages = [
-  "/src/assets/feature-grind.jpg",
-  "/src/assets/hero-product.jpg", 
-  "/src/assets/feature-blend.jpg",
-  "/src/assets/feature-juice.jpg",
-  "/src/assets/blend.jpg"
+  featureGrind,
+  heroProduct,
+  featureBlend,
+  featureJuice,
+  blendImage
 ];
 
 export function ProductImageGallery() {
