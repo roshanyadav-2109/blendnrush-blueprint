@@ -8,7 +8,7 @@ export function ProductGallerySection() {
       title: "Complete Device"
     },
     {
-      src: "/src/assets/WhatsApp Image 2025-09-21 at 00.40.19_d930aaff.jpg", 
+      src: "/src/assets/juiceblending.jpg", 
       alt: "Blending smoothies and shakes",
       title: "Perfect Smoothies"
     },
