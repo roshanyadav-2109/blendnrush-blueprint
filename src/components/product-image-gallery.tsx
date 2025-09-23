@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 import featureGrind from "@/assets/feature-grind.jpg";
-import heroProduct from "@/assets/hero-product.jpg";
+import heroProduct from "@/assets/juiceblending.jpg";
 import featureBlend from "@/assets/feature-blend.jpg";
 import featureJuice from "@/assets/feature-juice.jpg";
 import blendImage from "@/assets/blend.jpg";
