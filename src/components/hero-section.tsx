@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
-import heroProduct from "@/assets/WhatsApp Image 2025-09-21 at 00.40.19_d930aaff.jpg";
+import heroProduct from "@/assets/hero-product.jpg";
 
 export function HeroSection() {
   const scrollToFeatures = () => {
