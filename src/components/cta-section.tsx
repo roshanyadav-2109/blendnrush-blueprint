@@ -125,7 +125,7 @@ export function CtaSection() {
                     Coming Soon
                   </Button>
                 ) : (
-                  <a href="https://rzp.io/rzp/blendnrush" target="_blank" rel="noopener noreferrer">
+                  <a href="/product">
                     <Button
                       size="lg"
                       className={cn("w-full text-lg h-12 font-bold", !plan.isBestValue && "bg-secondary text-secondary-foreground hover:bg-secondary/80")}
