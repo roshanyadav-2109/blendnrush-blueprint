@@ -40,10 +40,6 @@ const faqData = [
     answer: "We offer free shipping on all orders. Standard delivery takes 3-5 business days, while express delivery is available for 1-2 business days at an additional cost."
   },
   {
-    question: "Can I return the product if I'm not satisfied?",
-    answer: "Absolutely! We offer a 30-day money-back guarantee. If you're not completely satisfied, you can return the product in its original condition for a full refund."
-  },
-  {
     question: "Are replacement parts available?",
     answer: "Yes, all individual attachments and accessories are available for purchase separately. This ensures your device can serve you for years to come."
   }
