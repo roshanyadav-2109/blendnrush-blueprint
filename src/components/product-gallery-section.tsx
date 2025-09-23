@@ -3,12 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 export function ProductGallerySection() {
   const productImages = [
     {
-      src: "/src/assets/hero-product.jpg",
+      src: "/src/assets/33b1d_512.jpg",
       alt: "BlendNRush All-in-One Device",
       title: "Complete Device"
     },
     {
-      src: "/src/assets/feature-blend.jpg", 
+      src: "/src/assets/WhatsApp Image 2025-09-21 at 00.40.19_d930aaff.jpg", 
       alt: "Blending smoothies and shakes",
       title: "Perfect Smoothies"
     },
