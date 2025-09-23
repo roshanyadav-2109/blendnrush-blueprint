@@ -4,10 +4,10 @@ import { Card } from "@/components/ui/card";
 import { ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 
 const productImages = [
-  "/src/assets/hero-product.jpg",
+  "/src/assets/feature-grind.jpg",
+  "/src/assets/hero-product.jpg", 
   "/src/assets/feature-blend.jpg",
   "/src/assets/feature-juice.jpg",
-  "/src/assets/feature-grind.jpg",
   "/src/assets/blend.jpg"
 ];
 
