@@ -70,10 +70,6 @@ export function ProductInfo() {
               <Truck className="w-4 h-4" />
               Free Delivery
             </span>
-            <span className="flex items-center gap-1">
-              <Award className="w-4 h-4" />
-              1 Year Warranty
-            </span>
           </div>
         </CardContent>
       </Card>
@@ -202,13 +198,9 @@ export function ProductInfo() {
             <Truck className="w-4 h-4" />
             Fast Shipping
           </span>
-          <span className="flex items-center gap-1">
-            <Award className="w-4 h-4" />
-            Quality Guarantee
-          </span>
         </div>
         <p className="text-xs text-muted-foreground">
-          30-day return policy • Nationwide warranty support
+          30-day return policy • Secure transactions
         </p>
       </div>
     </div>

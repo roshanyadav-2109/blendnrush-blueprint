@@ -3,7 +3,7 @@ import { ProductImageGallery } from "@/components/product-image-gallery";
 import { ProductInfo } from "@/components/product-info";
 import { ProductReviews } from "@/components/product-reviews";
 import { ProductFAQ } from "@/components/product-faq";
-import { RelatedProducts } from "@/components/related-products";
+
 
 export default function Product() {
   return (
@@ -18,14 +18,9 @@ export default function Product() {
         </div>
 
         {/* Product Details Sections */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-12">
-          <div className="lg:col-span-2 space-y-8">
-            <ProductReviews />
-            <ProductFAQ />
-          </div>
-          <div>
-            <RelatedProducts />
-          </div>
+        <div className="space-y-8 mb-12">
+          <ProductReviews />
+          <ProductFAQ />
         </div>
       </main>
     </div>
