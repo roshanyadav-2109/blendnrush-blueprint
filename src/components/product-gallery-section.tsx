@@ -1,24 +1,31 @@
 import { Card, CardContent } from "@/components/ui/card";
 
+// Import images directly so Vite can process them
+import completeDeviceImg from "@/assets/33b1d_512.jpg";
+import smoothiesImg from "@/assets/juiceblending.jpg";
+import juicesImg from "@/assets/feature-juice.jpg";
+import grindingImg from "@/assets/feature-grind.jpg";
+
+
 export function ProductGallerySection() {
   const productImages = [
     {
-      src: "/src/assets/33b1d_512.jpg",
+      src: completeDeviceImg,
       alt: "BlendNRush All-in-One Device",
       title: "Complete Device"
     },
     {
-      src: "/src/assets/juiceblending.jpg", 
+      src: smoothiesImg,
       alt: "Blending smoothies and shakes",
       title: "Perfect Smoothies"
     },
     {
-      src: "/src/assets/feature-juice.jpg",
+      src: juicesImg,
       alt: "Fresh juice extraction",
       title: "Fresh Juices"
     },
     {
-      src: "/src/assets/feature-grind.jpg",
+      src: grindingImg,
       alt: "Grinding spices and coffee",
       title: "Precision Grinding"
     }
