@@ -10,6 +10,10 @@ import Product from "./pages/Product";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import ShippingPolicy from "./pages/ShippingPolicy";
+import CancellationRefunds from "./pages/CancellationRefunds";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +30,10 @@ const App = () => (
               <Route path="/product" element={<Product />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/terms" element={<TermsAndConditions />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/shipping" element={<ShippingPolicy />} />
+              <Route path="/cancellation" element={<CancellationRefunds />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
