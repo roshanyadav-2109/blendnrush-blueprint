@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      custom_users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: number
+          password_hash: string
+          role: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: number
+          password_hash: string
+          role?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: number
+          password_hash?: string
+          role?: string | null
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string
@@ -64,7 +88,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      hash_password: {
+        Args: { password: string }
+        Returns: string
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_custom_admin: {
+        Args: { user_email: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
