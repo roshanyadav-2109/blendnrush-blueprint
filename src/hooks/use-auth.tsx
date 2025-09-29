@@ -1,137 +1,127 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { User, Session } from '@supabase/supabase-js'
-import { supabase } from '@/integrations/supabase/client'
-import { toast } from '@/hooks/use-toast'
+import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface User {
+  id: number;
+  email: string;
+  role: string;
+  created_at: string;
+}
 
 interface AuthContextType {
-  user: User | null
-  session: Session | null
-  loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error: any }>
-  signUp: (email: string, password: string) => Promise<{ error: any }>
-  signOut: () => Promise<void>
-  isAdmin: boolean
+  user: User | null;
+  loading: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
+  signOut: () => void;
+  isAdmin: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session)
-        setUser(session?.user ?? null)
-        
-        // Check admin role from JWT
-        if (session?.user) {
-          const userRole = session.user.user_metadata?.role || 
-                          session.user.app_metadata?.role ||
-                          'customer'
-          setIsAdmin(userRole === 'admin')
-        } else {
-          setIsAdmin(false)
-        }
-        
-        setLoading(false)
+    // Check for existing session in localStorage
+    const savedUser = localStorage.getItem('blendnrush_user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (error) {
+        console.error('Error parsing saved user:', error);
+        localStorage.removeItem('blendnrush_user');
       }
-    )
-
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      
-      if (session?.user) {
-        const userRole = session.user.user_metadata?.role || 
-                        session.user.app_metadata?.role ||
-                        'customer'
-        setIsAdmin(userRole === 'admin')
-      }
-      
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
+    }
+    setLoading(false);
+  }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-    
-    if (error) {
+    try {
+      const { data, error } = await supabase.functions.invoke('auth', {
+        body: { action: 'login', email, password }
+      });
+
+      if (error) throw error;
+      if (data.error) throw new Error(data.error);
+
+      setUser(data.user);
+      localStorage.setItem('blendnrush_user', JSON.stringify(data.user));
+      
       toast({
-        title: "Sign in failed",
-        description: error.message,
+        title: "Success",
+        description: "Logged in successfully!",
+      });
+    } catch (error: any) {
+      console.error('Sign in error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to sign in",
         variant: "destructive",
-      })
+      });
+      throw error;
     }
-    
-    return { error }
-  }
+  };
 
   const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/`
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl
-      }
-    })
-    
-    if (error) {
+    try {
+      const { data, error } = await supabase.functions.invoke('auth', {
+        body: { action: 'signup', email, password }
+      });
+
+      if (error) throw error;
+      if (data.error) throw new Error(data.error);
+
+      setUser(data.user);
+      localStorage.setItem('blendnrush_user', JSON.stringify(data.user));
+      
       toast({
-        title: "Sign up failed",
-        description: error.message,
+        title: "Success",
+        description: "Account created successfully!",
+      });
+    } catch (error: any) {
+      console.error('Sign up error:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create account",
         variant: "destructive",
-      })
-    } else {
-      toast({
-        title: "Check your email",
-        description: "We sent you a confirmation link to complete your registration.",
-      })
+      });
+      throw error;
     }
-    
-    return { error }
-  }
+  };
 
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) {
-      toast({
-        title: "Sign out failed",
-        description: error.message,
-        variant: "destructive",
-      })
-    }
-  }
+  const signOut = () => {
+    setUser(null);
+    localStorage.removeItem('blendnrush_user');
+    toast({
+      title: "Success",
+      description: "Signed out successfully",
+    });
+  };
 
-  const value = {
-    user,
-    session,
-    loading,
-    signIn,
-    signUp,
-    signOut,
-    isAdmin,
-  }
+  const isAdmin = user?.role === 'admin';
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      signIn,
+      signUp,
+      signOut,
+      isAdmin,
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-export const useAuth = () => {
-  const context = useContext(AuthContext)
+export function useAuth() {
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context
+  return context;
 }

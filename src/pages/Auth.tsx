@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Loader2 } from 'lucide-react'
 import { Header } from '@/components/header'
+import { Footer } from '@/components/footer'
+import { TestCredentials } from '@/components/test-credentials'
 import { z } from 'zod'
 
 const authSchema = z.object({
@@ -190,7 +192,10 @@ export default function Auth() {
             </Tabs>
           </CardContent>
         </Card>
+        
+        <TestCredentials />
       </div>
+      <Footer />
     </div>
   )
 }

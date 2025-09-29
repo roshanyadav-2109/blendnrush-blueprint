@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { ProductImageGallery } from "@/components/product-image-gallery";
 import { ProductInfo } from "@/components/product-info";
 import { ProductReviews } from "@/components/product-reviews";
@@ -23,6 +24,7 @@ export default function Product() {
           <ProductFAQ />
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

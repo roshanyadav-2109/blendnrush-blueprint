@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 const PrivacyPolicy = () => {
   return (
@@ -75,6 +76,7 @@ const PrivacyPolicy = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

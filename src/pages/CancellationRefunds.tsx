@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 const CancellationRefunds = () => {
   return (
@@ -55,6 +56,7 @@ const CancellationRefunds = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

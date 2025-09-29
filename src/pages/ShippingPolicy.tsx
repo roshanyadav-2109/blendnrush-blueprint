@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 const ShippingPolicy = () => {
   return (
@@ -47,6 +48,7 @@ const ShippingPolicy = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
