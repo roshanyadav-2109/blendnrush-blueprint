@@ -1,27 +1,166 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Star, Plus, Minus, ShieldCheck, Truck, Award, ChevronDown, Heart } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Star,
+  Plus,
+  Minus,
+  ShieldCheck,
+  Truck,
+  ChevronDown,
+  Heart,
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
 
 const variants = [
   { id: 1, name: "Standard Pack", price: 449, originalPrice: 999 },
-  { id: 2, name: "Pro Pack", price: 749, originalPrice: 1499, comingSoon: true }
+  {
+    id: 2,
+    name: "Pro Pack",
+    price: 749,
+    originalPrice: 1499,
+    comingSoon: true,
+  },
 ];
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 export function ProductInfo() {
+  const { user } = useAuth();
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [quantity, setQuantity] = useState(1);
   const [showFullDescription, setShowFullDescription] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
 
   const handleQuantityChange = (change: number) => {
     setQuantity(Math.max(1, quantity + change));
   };
 
+  const handlePayment = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to proceed with the purchase.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { data: order, error: orderError } =
+        await supabase.functions.invoke("razorpay", {
+          body: {
+            action: "create-order",
+            amount: selectedVariant.price * quantity,
+          },
+        });
+
+      if (orderError) throw orderError;
+
+      const options = {
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        name: "BlendNRush",
+        description: "BlendNRush Product Purchase",
+        order_id: order.orderId,
+        handler: async function (response: any) {
+          const {
+            razorpay_payment_id,
+            razorpay_order_id,
+            razorpay_signature,
+          } = response;
+
+          const { error: verifyError } = await supabase.functions.invoke(
+            "razorpay",
+            {
+              body: {
+                action: "verify-payment",
+                paymentId: razorpay_payment_id,
+                orderId: razorpay_order_id,
+                signature: razorpay_signature,
+              },
+            }
+          );
+
+          if (verifyError) {
+            toast({
+              title: "Payment Verification Failed",
+              description: "There was an issue verifying your payment.",
+              variant: "destructive",
+            });
+            return;
+          }
+
+          const { error: dbError } = await supabase.from("orders").insert([
+            {
+              customer_email: user.email,
+              total_pricing: selectedVariant.price * quantity,
+              order_status: "Pending",
+              quantity: quantity,
+              // These fields should be collected from a form
+              customer_name: "Test Customer",
+              customer_contact: "9876543210",
+              address: "123 Test Street",
+              pincode: "110001",
+            },
+          ]);
+
+          if (dbError) {
+            toast({
+              title: "Order Creation Failed",
+              description: "Your payment was successful but we could not create your order.",
+              variant: "destructive",
+            });
+            return;
+          }
+
+          toast({
+            title: "Payment Successful",
+            description: "Your order has been placed successfully!",
+          });
+        },
+        prefill: {
+          email: user.email,
+        },
+        theme: {
+          color: "#F56565",
+        },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error: any) {
+      toast({
+        title: "Payment Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const discountPercentage = Math.round(
-    ((selectedVariant.originalPrice - selectedVariant.price) / selectedVariant.originalPrice) * 100
+    ((selectedVariant.originalPrice - selectedVariant.price) /
+      selectedVariant.originalPrice) *
+      100
   );
 
   return (
@@ -29,16 +168,19 @@ export function ProductInfo() {
       {/* Product Title & Rating */}
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <Badge variant="secondary" className="bg-success/10 text-success font-medium">
+          <Badge
+            variant="secondary"
+            className="bg-success/10 text-success font-medium"
+          >
             Best Seller
           </Badge>
           <Badge variant="outline">Free Shipping</Badge>
         </div>
-        
+
         <h1 className="text-3xl font-bold mb-3">
           All-in-One Kitchen Appliance
         </h1>
-        
+
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             {[...Array(5)].map((_, i) => (
@@ -54,13 +196,17 @@ export function ProductInfo() {
       <Card className="bg-gradient-muted border-primary/20">
         <CardContent className="pt-6">
           <div className="flex items-baseline gap-3 mb-3">
-            <span className="text-3xl font-bold text-primary">₹{selectedVariant.price}</span>
-            <span className="text-xl text-muted-foreground line-through">₹{selectedVariant.originalPrice}</span>
+            <span className="text-3xl font-bold text-primary">
+              ₹{selectedVariant.price}
+            </span>
+            <span className="text-xl text-muted-foreground line-through">
+              ₹{selectedVariant.originalPrice}
+            </span>
             <Badge className="bg-destructive text-destructive-foreground">
               {discountPercentage}% OFF
             </Badge>
           </div>
-          
+
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1">
               <ShieldCheck className="w-4 h-4" />
@@ -77,17 +223,29 @@ export function ProductInfo() {
       {/* Product Description */}
       <div className="space-y-3">
         <p className="text-muted-foreground leading-relaxed">
-          Transform your kitchen with this revolutionary all-in-one device that blends, grinds, and juices with professional precision. Perfect for busy lifestyles and health-conscious individuals.
+          Transform your kitchen with this revolutionary all-in-one device that
+          blends, grinds, and juices with professional precision. Perfect for
+          busy lifestyles and health-conscious individuals.
         </p>
 
-        <Collapsible open={showFullDescription} onOpenChange={setShowFullDescription}>
+        <Collapsible
+          open={showFullDescription}
+          onOpenChange={setShowFullDescription}
+        >
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" className="p-0 h-auto font-medium text-primary">
+            <Button
+              variant="ghost"
+              className="p-0 h-auto font-medium text-primary"
+            >
               <span>View detailed description</span>
-              <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${showFullDescription ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`ml-1 h-4 w-4 transition-transform ${
+                  showFullDescription ? "rotate-180" : ""
+                }`}
+              />
             </Button>
           </CollapsibleTrigger>
-          
+
           <CollapsibleContent className="space-y-4 mt-4">
             <div>
               <h3 className="font-semibold mb-2">Key Features:</h3>
@@ -99,12 +257,13 @@ export function ProductInfo() {
                 <li>• Easy-clean detachable components</li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-2">Perfect For:</h3>
               <p className="text-sm text-muted-foreground">
-                Smoothie enthusiasts, coffee lovers, health-conscious individuals, small kitchens, 
-                and anyone looking to simplify their food preparation routine.
+                Smoothie enthusiasts, coffee lovers, health-conscious
+                individuals, small kitchens, and anyone looking to simplify
+                their food preparation routine.
               </p>
             </div>
           </CollapsibleContent>
@@ -116,14 +275,14 @@ export function ProductInfo() {
         <h3 className="font-semibold">Choose Your Pack:</h3>
         <div className="grid gap-3">
           {variants.map((variant) => (
-            <Card 
+            <Card
               key={variant.id}
               className={`cursor-pointer transition-all ${
-                selectedVariant.id === variant.id 
-                  ? 'border-primary shadow-brand' 
-                  : variant.comingSoon 
-                    ? 'opacity-50 cursor-not-allowed' 
-                    : 'hover:border-primary/50'
+                selectedVariant.id === variant.id
+                  ? "border-primary shadow-brand"
+                  : variant.comingSoon
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:border-primary/50"
               }`}
               onClick={() => !variant.comingSoon && setSelectedVariant(variant)}
             >
@@ -133,7 +292,9 @@ export function ProductInfo() {
                     <h4 className="font-medium">{variant.name}</h4>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="font-bold">₹{variant.price}</span>
-                      <span className="text-sm text-muted-foreground line-through">₹{variant.originalPrice}</span>
+                      <span className="text-sm text-muted-foreground line-through">
+                        ₹{variant.originalPrice}
+                      </span>
                     </div>
                   </div>
                   {variant.comingSoon && (
@@ -151,17 +312,19 @@ export function ProductInfo() {
         <div className="flex items-center gap-3">
           <span className="font-medium">Quantity:</span>
           <div className="flex items-center border rounded-md">
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="icon"
               onClick={() => handleQuantityChange(-1)}
               className="h-10 w-10"
             >
               <Minus className="h-4 w-4" />
             </Button>
-            <span className="px-4 py-2 font-medium min-w-[3rem] text-center">{quantity}</span>
-            <Button 
-              variant="ghost" 
+            <span className="px-4 py-2 font-medium min-w-[3rem] text-center">
+              {quantity}
+            </span>
+            <Button
+              variant="ghost"
               size="icon"
               onClick={() => handleQuantityChange(1)}
               className="h-10 w-10"
@@ -180,7 +343,11 @@ export function ProductInfo() {
           </Button>
         </div>
 
-        <Button size="lg" className="w-full h-12 text-lg font-semibold bg-success hover:bg-success/90">
+        <Button
+          size="lg"
+          className="w-full h-12 text-lg font-semibold bg-success hover:bg-success/90"
+          onClick={handlePayment}
+        >
           Buy Now - ₹{selectedVariant.price * quantity}
         </Button>
       </div>
