@@ -18,11 +18,14 @@ import {
   Heart,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "@/hooks/use-toast";
 import {
   CustomerDetailsDialog,
   CustomerDetails,
 } from "@/components/customer-details-dialog";
+
+const TEST_EMAILS = ["admin@blendnrush.com", "customer@test.com"];
 
 const variants = [
   { id: 1, name: "Standard Pack", price: 449, originalPrice: 999 },
@@ -42,10 +45,14 @@ declare global {
 }
 
 export function ProductInfo() {
+  const { user } = useAuth();
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [quantity, setQuantity] = useState(1);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [showCustomerDialog, setShowCustomerDialog] = useState(false);
+
+  const isTestUser = user?.email && TEST_EMAILS.includes(user.email);
+  const effectivePrice = isTestUser ? 0 : selectedVariant.price;
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -65,12 +72,53 @@ export function ProductInfo() {
   const handleCustomerDetailsSubmit = async (details: CustomerDetails) => {
     setShowCustomerDialog(false);
 
+    const totalAmount = effectivePrice * quantity;
+
+    // If test user with ₹0, skip Razorpay and create order directly
+    if (isTestUser && totalAmount === 0) {
+      try {
+        const { error: dbError } = await supabase.from("orders").insert([
+          {
+            customer_email: details.email,
+            customer_name: details.name,
+            customer_contact: details.contact,
+            address: details.address,
+            pincode: details.pincode,
+            total_pricing: 0,
+            order_status: "Pending",
+            quantity: quantity,
+          },
+        ]);
+
+        if (dbError) {
+          toast({
+            title: "Order Creation Failed",
+            description: "Could not create your test order.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        toast({
+          title: "Test Order Created",
+          description: "Your test order has been placed successfully (₹0)!",
+        });
+      } catch (error: any) {
+        toast({
+          title: "Order Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+      return;
+    }
+
     try {
       const { data: order, error: orderError } =
         await supabase.functions.invoke("razorpay", {
           body: {
             action: "create-order",
-            amount: selectedVariant.price * quantity,
+            amount: totalAmount,
           },
         });
 
@@ -118,7 +166,7 @@ export function ProductInfo() {
               customer_contact: details.contact,
               address: details.address,
               pincode: details.pincode,
-              total_pricing: selectedVariant.price * quantity,
+              total_pricing: totalAmount,
               order_status: "Pending",
               quantity: quantity,
             },
@@ -176,6 +224,11 @@ export function ProductInfo() {
             Best Seller
           </Badge>
           <Badge variant="outline">Free Shipping</Badge>
+          {isTestUser && (
+            <Badge className="bg-warning/10 text-warning font-medium">
+              TEST MODE
+            </Badge>
+          )}
         </div>
 
         <h1 className="text-3xl font-bold mb-3">
@@ -196,17 +249,31 @@ export function ProductInfo() {
       {/* Price & Offers */}
       <Card className="bg-gradient-muted border-primary/20">
         <CardContent className="pt-6">
-          <div className="flex items-baseline gap-3 mb-3">
-            <span className="text-3xl font-bold text-primary">
-              ₹{selectedVariant.price}
-            </span>
-            <span className="text-xl text-muted-foreground line-through">
-              ₹{selectedVariant.originalPrice}
-            </span>
-            <Badge className="bg-destructive text-destructive-foreground">
-              {discountPercentage}% OFF
-            </Badge>
-          </div>
+          {isTestUser ? (
+            <div className="mb-3">
+              <div className="flex items-baseline gap-3">
+                <span className="text-3xl font-bold text-warning">₹0</span>
+                <Badge className="bg-warning/10 text-warning">
+                  TEST PAYMENT
+                </Badge>
+              </div>
+              <p className="text-sm text-muted-foreground mt-2">
+                You're using a test account. All purchases are free.
+              </p>
+            </div>
+          ) : (
+            <div className="flex items-baseline gap-3 mb-3">
+              <span className="text-3xl font-bold text-primary">
+                ₹{selectedVariant.price}
+              </span>
+              <span className="text-xl text-muted-foreground line-through">
+                ₹{selectedVariant.originalPrice}
+              </span>
+              <Badge className="bg-destructive text-destructive-foreground">
+                {discountPercentage}% OFF
+              </Badge>
+            </div>
+          )}
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span className="flex items-center gap-1">
@@ -349,7 +416,7 @@ export function ProductInfo() {
           className="w-full h-12 text-lg font-semibold bg-success hover:bg-success/90"
           onClick={handleBuyNowClick}
         >
-          Buy Now - ₹{selectedVariant.price * quantity}
+          Buy Now - ₹{effectivePrice * quantity}
         </Button>
       </div>
 
@@ -376,7 +443,7 @@ export function ProductInfo() {
         open={showCustomerDialog}
         onOpenChange={setShowCustomerDialog}
         onSubmit={handleCustomerDetailsSubmit}
-        totalAmount={selectedVariant.price * quantity}
+        totalAmount={effectivePrice * quantity}
       />
     </div>
   );
