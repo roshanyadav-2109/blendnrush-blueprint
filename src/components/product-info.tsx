@@ -18,8 +18,11 @@ import {
   Heart,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/use-auth";
 import { toast } from "@/hooks/use-toast";
+import {
+  CustomerDetailsDialog,
+  CustomerDetails,
+} from "@/components/customer-details-dialog";
 
 const variants = [
   { id: 1, name: "Standard Pack", price: 449, originalPrice: 999 },
@@ -39,10 +42,10 @@ declare global {
 }
 
 export function ProductInfo() {
-  const { user } = useAuth();
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [quantity, setQuantity] = useState(1);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showCustomerDialog, setShowCustomerDialog] = useState(false);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -55,15 +58,12 @@ export function ProductInfo() {
     setQuantity(Math.max(1, quantity + change));
   };
 
-  const handlePayment = async () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to proceed with the purchase.",
-        variant: "destructive",
-      });
-      return;
-    }
+  const handleBuyNowClick = () => {
+    setShowCustomerDialog(true);
+  };
+
+  const handleCustomerDetailsSubmit = async (details: CustomerDetails) => {
+    setShowCustomerDialog(false);
 
     try {
       const { data: order, error: orderError } =
@@ -113,15 +113,14 @@ export function ProductInfo() {
 
           const { error: dbError } = await supabase.from("orders").insert([
             {
-              customer_email: user.email,
+              customer_email: details.email,
+              customer_name: details.name,
+              customer_contact: details.contact,
+              address: details.address,
+              pincode: details.pincode,
               total_pricing: selectedVariant.price * quantity,
               order_status: "Pending",
               quantity: quantity,
-              // These fields should be collected from a form
-              customer_name: "Test Customer",
-              customer_contact: "9876543210",
-              address: "123 Test Street",
-              pincode: "110001",
             },
           ]);
 
@@ -140,7 +139,9 @@ export function ProductInfo() {
           });
         },
         prefill: {
-          email: user.email,
+          name: details.name,
+          email: details.email,
+          contact: details.contact,
         },
         theme: {
           color: "#F56565",
@@ -346,7 +347,7 @@ export function ProductInfo() {
         <Button
           size="lg"
           className="w-full h-12 text-lg font-semibold bg-success hover:bg-success/90"
-          onClick={handlePayment}
+          onClick={handleBuyNowClick}
         >
           Buy Now - ₹{selectedVariant.price * quantity}
         </Button>
@@ -370,6 +371,13 @@ export function ProductInfo() {
           30-day return policy • Secure transactions
         </p>
       </div>
+
+      <CustomerDetailsDialog
+        open={showCustomerDialog}
+        onOpenChange={setShowCustomerDialog}
+        onSubmit={handleCustomerDetailsSubmit}
+        totalAmount={selectedVariant.price * quantity}
+      />
     </div>
   );
 }
