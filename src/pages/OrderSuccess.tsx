@@ -94,7 +94,7 @@ export default function OrderSuccess() {
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Order Total</span>
                   <span className="text-2xl font-bold text-primary">
-                    ₹{totalAmount}
+                    竄ｹ{totalAmount}
                   </span>
                 </div>
 
@@ -107,14 +107,14 @@ export default function OrderSuccess() {
                       </span>
                     </div>
                     <span className="text-2xl font-bold text-success">
-                      ₹{savedAmount}
+                      竄ｹ{savedAmount}
                     </span>
                   </div>
                 )}
 
                 <div className="bg-gradient-muted rounded-lg p-4 text-center">
                   <p className="text-lg font-medium mb-2">
-                    🎉 Thank you for your purchase! 🎉
+                    脂 Thank you for your purchase! 脂
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Your order will be delivered in just 3-5 days. Get ready to experience the magic of BlendNRush!
@@ -126,13 +126,6 @@ export default function OrderSuccess() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
-            <Button
-              onClick={() => navigate("/dashboard")}
-              className="flex-1"
-              size="lg"
-            >
-              Track Your Order
-            </Button>
             <Button
               onClick={() => navigate("/")}
               variant="outline"
