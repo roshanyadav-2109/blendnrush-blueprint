@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AnnouncementBar } from "@/components/announcement-bar";
@@ -21,6 +21,7 @@ declare global {
 
 export default function Payment() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -34,6 +35,8 @@ export default function Payment() {
   const pincode = searchParams.get("pincode") || "";
 
   const totalAmount = price * quantity;
+  const originalPrice = 999; // Standard pack original price
+  const savedAmount = (originalPrice - price) * quantity;
 
   const paymentMethods = [
     { value: "UPI", label: "UPI", icon: Smartphone },
@@ -81,14 +84,10 @@ export default function Payment() {
           return;
         }
 
-        toast({
-          title: "Order Placed Successfully",
-          description: paymentMethod === "Cash on Delivery" 
-            ? "Your order will be delivered in 3-5 days. Pay on delivery!"
-            : "Your test order has been placed successfully!",
-        });
-        
-        window.location.href = "/";
+        // Redirect to success page
+        navigate(
+          `/order-success?amount=${totalAmount}&saved=${savedAmount}&orderId=${Date.now()}`
+        );
         return;
       }
 
@@ -159,12 +158,10 @@ export default function Payment() {
             return;
           }
 
-          toast({
-            title: "Payment Successful",
-            description: "Your order has been placed successfully!",
-          });
-          
-          window.location.href = "/";
+          // Redirect to success page
+          navigate(
+            `/order-success?amount=${totalAmount}&saved=${savedAmount}&orderId=${Date.now()}`
+          );
         },
         prefill: {
           name: name,

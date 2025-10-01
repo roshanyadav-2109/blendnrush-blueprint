@@ -40,7 +40,8 @@ export function ProductInfo() {
   const [quantity, setQuantity] = useState(1);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  const isTestUser = user?.email && TEST_EMAILS.includes(user.email);
+  // Check if user is logged in and is a test user
+  const isTestUser = user ? TEST_EMAILS.includes(user.email) : false;
   const effectivePrice = isTestUser ? 0 : selectedVariant.price;
 
   const handleQuantityChange = (change: number) => {
