@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { Star, ThumbsUp, Filter } from "lucide-react";
+import { Star, ThumbsUp } from "lucide-react";
 
 const reviewStats = [
   { stars: 5, count: 1847, percentage: 65 },
@@ -77,12 +76,8 @@ export function ProductReviews() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle>
           <span>Customer Reviews</span>
-          <Button variant="outline" size="sm">
-            <Filter className="w-4 h-4 mr-2" />
-            Filter
-          </Button>
         </CardTitle>
       </CardHeader>
       
@@ -112,57 +107,57 @@ export function ProductReviews() {
 
         {/* Individual Reviews */}
         <div className="space-y-4 mt-6">
-          {reviews.map((review) => (
-            <Card key={review.id} className="border-l-4 border-l-primary/20">
-              <CardContent className="pt-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="w-10 h-10">
-                      <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                        {review.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">{review.name}</span>
-                        {review.verified && (
-                          <Badge variant="secondary" className="text-xs">
-                            Verified Purchase
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 mt-1">
-                        <div className="flex">
-                          {renderStars(review.rating)}
+            {reviews.map((review) => (
+              <Card key={review.id} className="border-l-4 border-l-primary/20">
+                <CardContent className="pt-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="w-10 h-10">
+                        <AvatarFallback className="bg-primary/10 text-primary font-medium">
+                          {review.name.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{review.name}</span>
+                          {review.verified && (
+                            <Badge variant="secondary" className="text-xs">
+                              Verified Purchase
+                            </Badge>
+                          )}
                         </div>
-                        <span className="text-sm text-muted-foreground">
-                          {new Date(review.date).toLocaleDateString()}
-                        </span>
+                        <div className="flex items-center gap-2 mt-1">
+                          <div className="flex">
+                            {renderStars(review.rating)}
+                          </div>
+                          <span className="text-sm text-muted-foreground">
+                            {new Date(review.date).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <h4 className="font-medium">{review.title}</h4>
-                  <p className="text-muted-foreground leading-relaxed">{review.content}</p>
-                </div>
-                
-                <div className="flex items-center justify-between mt-4 pt-3 border-t">
-                  <Button variant="ghost" size="sm" className="text-muted-foreground">
-                    <ThumbsUp className="w-4 h-4 mr-2" />
-                    Helpful ({review.helpful})
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-medium">{review.title}</h4>
+                    <p className="text-muted-foreground leading-relaxed">{review.content}</p>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                    <Button variant="ghost" size="sm" className="text-muted-foreground">
+                      <ThumbsUp className="w-4 h-4 mr-2" />
+                      Helpful ({review.helpful})
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
 
-          <div className="text-center pt-4">
-            <Button variant="outline">
-              Load More Reviews
-            </Button>
-          </div>
+            <div className="text-center pt-4">
+              <Button variant="outline">
+                Load More Reviews
+              </Button>
+            </div>
         </div>
       </CardContent>
     </Card>
