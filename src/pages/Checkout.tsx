@@ -145,7 +145,7 @@ export default function Checkout() {
                   <img
                     src={heroProduct}
                     alt="Product"
-                    className="w-full h-48 object-cover rounded-lg mb-4"
+                    className="w-full h-auto rounded-lg mb-4"
                   />
                 </div>
 
