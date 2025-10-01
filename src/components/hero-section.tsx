@@ -38,7 +38,7 @@ export function HeroSection() {
               </Button>
             </div>
             
-            <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
               <div className="flex items-center space-x-2">
                 <span className="w-2 h-2 bg-success rounded-full"></span>
                 <span>Complete Device</span>
