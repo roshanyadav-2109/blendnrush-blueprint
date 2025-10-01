@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, ThumbsUp, Filter } from "lucide-react";
 
 const reviewStats = [
@@ -63,9 +62,6 @@ const reviews = [
 ];
 
 export function ProductReviews() {
-  const [sortBy, setSortBy] = useState("recent");
-  const [filterBy, setFilterBy] = useState("all");
-
   const overallRating = 4.8;
   const totalReviews = reviewStats.reduce((sum, stat) => sum + stat.count, 0);
 
@@ -114,69 +110,60 @@ export function ProductReviews() {
           </div>
         </div>
 
-        {/* Review Filters */}
-        <Tabs value={sortBy} onValueChange={setSortBy}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="recent">Most Recent</TabsTrigger>
-            <TabsTrigger value="helpful">Most Helpful</TabsTrigger>
-            <TabsTrigger value="rating">Highest Rating</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value={sortBy} className="space-y-4 mt-6">
-            {/* Individual Reviews */}
-            {reviews.map((review) => (
-              <Card key={review.id} className="border-l-4 border-l-primary/20">
-                <CardContent className="pt-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="w-10 h-10">
-                        <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                          {review.name.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{review.name}</span>
-                          {review.verified && (
-                            <Badge variant="secondary" className="text-xs">
-                              Verified Purchase
-                            </Badge>
-                          )}
+        {/* Individual Reviews */}
+        <div className="space-y-4 mt-6">
+          {reviews.map((review) => (
+            <Card key={review.id} className="border-l-4 border-l-primary/20">
+              <CardContent className="pt-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="w-10 h-10">
+                      <AvatarFallback className="bg-primary/10 text-primary font-medium">
+                        {review.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{review.name}</span>
+                        {review.verified && (
+                          <Badge variant="secondary" className="text-xs">
+                            Verified Purchase
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <div className="flex">
+                          {renderStars(review.rating)}
                         </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <div className="flex">
-                            {renderStars(review.rating)}
-                          </div>
-                          <span className="text-sm text-muted-foreground">
-                            {new Date(review.date).toLocaleDateString()}
-                          </span>
-                        </div>
+                        <span className="text-sm text-muted-foreground">
+                          {new Date(review.date).toLocaleDateString()}
+                        </span>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <h4 className="font-medium">{review.title}</h4>
-                    <p className="text-muted-foreground leading-relaxed">{review.content}</p>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mt-4 pt-3 border-t">
-                    <Button variant="ghost" size="sm" className="text-muted-foreground">
-                      <ThumbsUp className="w-4 h-4 mr-2" />
-                      Helpful ({review.helpful})
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+                
+                <div className="space-y-2">
+                  <h4 className="font-medium">{review.title}</h4>
+                  <p className="text-muted-foreground leading-relaxed">{review.content}</p>
+                </div>
+                
+                <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                  <Button variant="ghost" size="sm" className="text-muted-foreground">
+                    <ThumbsUp className="w-4 h-4 mr-2" />
+                    Helpful ({review.helpful})
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
 
-            <div className="text-center pt-4">
-              <Button variant="outline">
-                Load More Reviews
-              </Button>
-            </div>
-          </TabsContent>
-        </Tabs>
+          <div className="text-center pt-4">
+            <Button variant="outline">
+              Load More Reviews
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
