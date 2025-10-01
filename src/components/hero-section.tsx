@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
-import heroProduct from "@/assets/hero-product.jpg";
+import heroVideo from "@/assets/hero-video.mp4";
 
 export function HeroSection() {
   const scrollToFeatures = () => {
@@ -59,11 +59,16 @@ export function HeroSection() {
           </div>
           
           <div className="relative">
-            <img 
-              src={heroProduct}
-              alt="BlendNRush All-in-One Kitchen Appliance"
+            <video
+              src={heroVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
               className="relative z-10 w-full h-auto rounded-2xl shadow-xl"
-            />
+            >
+              Your browser does not support the video tag.
+            </video>
           </div>
 
         </div>
