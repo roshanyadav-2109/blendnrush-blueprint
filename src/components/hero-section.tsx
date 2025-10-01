@@ -30,7 +30,7 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
-                className="text-lg px-8 py-6 shadow-brand hover:shadow-xl transition-all duration-300"
+                className="text-lg px-6 py-4 sm:px-8 sm:py-6 shadow-brand hover:shadow-xl transition-all duration-300"
                 onClick={scrollToFeatures}
               >
                 See How It Works
