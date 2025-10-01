@@ -94,7 +94,7 @@ export default function OrderSuccess() {
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Order Total</span>
                   <span className="text-2xl font-bold text-primary">
-                    竄ｹ{totalAmount}
+                    ₹{totalAmount}
                   </span>
                 </div>
 
@@ -107,14 +107,14 @@ export default function OrderSuccess() {
                       </span>
                     </div>
                     <span className="text-2xl font-bold text-success">
-                      竄ｹ{savedAmount}
+                      ₹{savedAmount}
                     </span>
                   </div>
                 )}
 
                 <div className="bg-gradient-muted rounded-lg p-4 text-center">
                   <p className="text-lg font-medium mb-2">
-                    脂 Thank you for your purchase! 脂
+                    🎊 Thank you for your purchase! 🎊
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Your order will be delivered in just 3-5 days. Get ready to experience the magic of BlendNRush!
