@@ -46,6 +46,7 @@ export type Database = {
           customer_email: string
           customer_name: string
           id: number
+          mode_of_payment: string | null
           order_date: string | null
           order_status: string | null
           order_time: string | null
@@ -60,6 +61,7 @@ export type Database = {
           customer_email: string
           customer_name: string
           id?: number
+          mode_of_payment?: string | null
           order_date?: string | null
           order_status?: string | null
           order_time?: string | null
@@ -74,6 +76,7 @@ export type Database = {
           customer_email?: string
           customer_name?: string
           id?: number
+          mode_of_payment?: string | null
           order_date?: string | null
           order_status?: string | null
           order_time?: string | null

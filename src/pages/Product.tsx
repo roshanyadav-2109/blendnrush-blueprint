@@ -1,5 +1,6 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { AnnouncementBar } from "@/components/announcement-bar";
 import { ProductImageGallery } from "@/components/product-image-gallery";
 import { ProductInfo } from "@/components/product-info";
 import { ProductReviews } from "@/components/product-reviews";
@@ -9,6 +10,7 @@ import { ProductFAQ } from "@/components/product-faq";
 export default function Product() {
   return (
     <div className="min-h-screen bg-background">
+      <AnnouncementBar />
       <Header />
       
       <main className="container px-4 py-8">
