@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,13 +18,7 @@ import {
   ChevronDown,
   Heart,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { toast } from "@/hooks/use-toast";
-import {
-  CustomerDetailsDialog,
-  CustomerDetails,
-} from "@/components/customer-details-dialog";
 
 const TEST_EMAILS = ["admin@blendnrush.com", "customer@test.com"];
 
@@ -38,172 +33,27 @@ const variants = [
   },
 ];
 
-declare global {
-  interface Window {
-    Razorpay: any;
-  }
-}
-
 export function ProductInfo() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [selectedVariant, setSelectedVariant] = useState(variants[0]);
   const [quantity, setQuantity] = useState(1);
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [showCustomerDialog, setShowCustomerDialog] = useState(false);
 
   const isTestUser = user?.email && TEST_EMAILS.includes(user.email);
   const effectivePrice = isTestUser ? 0 : selectedVariant.price;
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
 
   const handleQuantityChange = (change: number) => {
     setQuantity(Math.max(1, quantity + change));
   };
 
   const handleBuyNowClick = () => {
-    setShowCustomerDialog(true);
-  };
-
-  const handleCustomerDetailsSubmit = async (details: CustomerDetails) => {
-    setShowCustomerDialog(false);
-
-    const totalAmount = effectivePrice * quantity;
-
-    // If test user with ₹0, skip Razorpay and create order directly
-    if (isTestUser && totalAmount === 0) {
-      try {
-        const { error: dbError } = await supabase.from("orders").insert([
-          {
-            customer_email: details.email,
-            customer_name: details.name,
-            customer_contact: details.contact,
-            address: details.address,
-            pincode: details.pincode,
-            total_pricing: 0,
-            order_status: "Pending",
-            quantity: quantity,
-          },
-        ]);
-
-        if (dbError) {
-          toast({
-            title: "Order Creation Failed",
-            description: "Could not create your test order.",
-            variant: "destructive",
-          });
-          return;
-        }
-
-        toast({
-          title: "Test Order Created",
-          description: "Your test order has been placed successfully (₹0)!",
-        });
-      } catch (error: any) {
-        toast({
-          title: "Order Error",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
-      return;
-    }
-
-    try {
-      const { data: order, error: orderError } =
-        await supabase.functions.invoke("razorpay", {
-          body: {
-            action: "create-order",
-            amount: totalAmount,
-          },
-        });
-
-      if (orderError) throw orderError;
-
-      const options = {
-        key: order.keyId,
-        amount: order.amount,
-        currency: order.currency,
-        name: "BlendNRush",
-        description: "BlendNRush Product Purchase",
-        order_id: order.orderId,
-        handler: async function (response: any) {
-          const {
-            razorpay_payment_id,
-            razorpay_order_id,
-            razorpay_signature,
-          } = response;
-
-          const { error: verifyError } = await supabase.functions.invoke(
-            "razorpay",
-            {
-              body: {
-                action: "verify-payment",
-                paymentId: razorpay_payment_id,
-                orderId: razorpay_order_id,
-                signature: razorpay_signature,
-              },
-            }
-          );
-
-          if (verifyError) {
-            toast({
-              title: "Payment Verification Failed",
-              description: "There was an issue verifying your payment.",
-              variant: "destructive",
-            });
-            return;
-          }
-
-          const { error: dbError } = await supabase.from("orders").insert([
-            {
-              customer_email: details.email,
-              customer_name: details.name,
-              customer_contact: details.contact,
-              address: details.address,
-              pincode: details.pincode,
-              total_pricing: totalAmount,
-              order_status: "Pending",
-              quantity: quantity,
-            },
-          ]);
-
-          if (dbError) {
-            toast({
-              title: "Order Creation Failed",
-              description: "Your payment was successful but we could not create your order.",
-              variant: "destructive",
-            });
-            return;
-          }
-
-          toast({
-            title: "Payment Successful",
-            description: "Your order has been placed successfully!",
-          });
-        },
-        prefill: {
-          name: details.name,
-          email: details.email,
-          contact: details.contact,
-        },
-        theme: {
-          color: "#F56565",
-        },
-      };
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (error: any) {
-      toast({
-        title: "Payment Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
+    const params = new URLSearchParams({
+      quantity: quantity.toString(),
+      price: effectivePrice.toString(),
+      test: isTestUser.toString(),
+    });
+    navigate(`/checkout?${params.toString()}`);
   };
 
   const discountPercentage = Math.round(
@@ -438,13 +288,6 @@ export function ProductInfo() {
           30-day return policy • Secure transactions
         </p>
       </div>
-
-      <CustomerDetailsDialog
-        open={showCustomerDialog}
-        onOpenChange={setShowCustomerDialog}
-        onSubmit={handleCustomerDetailsSubmit}
-        totalAmount={effectivePrice * quantity}
-      />
     </div>
   );
 }

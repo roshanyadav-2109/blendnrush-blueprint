@@ -20,7 +20,7 @@ export function Header() {
           </Link>
         </div>
         <div className="flex items-center space-x-4">
-          {user ? (
+          {user && (
             <>
               <Button variant="ghost" size="sm" asChild>
                 <Link to="/dashboard">
@@ -33,13 +33,6 @@ export function Header() {
                 Sign Out
               </Button>
             </>
-          ) : (
-            <Button variant="default" size="sm" asChild>
-              <Link to="/auth">
-                <User className="h-4 w-4 mr-2" />
-                Sign In
-              </Link>
-            </Button>
           )}
         </div>
       </div>
