@@ -75,7 +75,7 @@ export default function Payment() {
       return;
     }
 
-    if (typeof window.Razorpay === "undefined") {
+    if (paymentMethod !== "Cash on Delivery" && typeof window.Razorpay === "undefined") {
       toast({
         title: "Payment Gateway Error",
         description: "Could not connect to the payment gateway. Please try again later.",
@@ -89,8 +89,10 @@ export default function Payment() {
     try {
       // For Cash on Delivery or Test Mode, create order directly
       if (paymentMethod === "Cash on Delivery" || (isTest && totalAmount === 0)) {
+        const orderNumber = Date.now().toString(); // Use timestamp as order number
         const { error: dbError } = await supabase.from("orders").insert([
           {
+            order_number: orderNumber,
             customer_email: email,
             customer_name: name,
             customer_contact: contact,
@@ -114,7 +116,7 @@ export default function Payment() {
 
         // Redirect to success page
         navigate(
-          `/order-success?amount=${totalAmount}&saved=${savedAmount}&orderId=${Date.now()}`
+          `/order-success?amount=${totalAmount}&saved=${savedAmount}&orderId=${orderNumber}`
         );
         return;
       }
@@ -164,6 +166,7 @@ export default function Payment() {
 
           const { error: dbError } = await supabase.from("orders").insert([
             {
+              order_number: razorpay_order_id, // Use Razorpay order ID
               customer_email: email,
               customer_name: name,
               customer_contact: contact,
@@ -188,7 +191,7 @@ export default function Payment() {
 
           // Redirect to success page
           navigate(
-            `/order-success?amount=${totalAmount}&saved=${savedAmount}&orderId=${Date.now()}`
+            `/order-success?amount=${totalAmount}&saved=${savedAmount}&orderId=${razorpay_order_id}`
           );
         },
         prefill: {
