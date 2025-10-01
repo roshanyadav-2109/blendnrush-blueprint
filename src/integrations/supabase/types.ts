@@ -50,6 +50,7 @@ export type Database = {
           order_date: string | null
           order_status: string | null
           order_time: string | null
+          order_number: string | null // Add this line
           pincode: string
           quantity: number
           total_pricing: number
@@ -64,6 +65,7 @@ export type Database = {
           mode_of_payment?: string | null
           order_date?: string | null
           order_status?: string | null
+          order_number?: string | null // Add this line
           order_time?: string | null
           pincode: string
           quantity: number
@@ -79,6 +81,7 @@ export type Database = {
           mode_of_payment?: string | null
           order_date?: string | null
           order_status?: string | null
+          order_number?: string | null // Add this line
           order_time?: string | null
           pincode?: string
           quantity?: number
