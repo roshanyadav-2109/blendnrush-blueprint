@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -19,11 +19,30 @@ declare global {
   }
 }
 
+// Function to load a script dynamically
+const loadScript = (src: string) => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+};
+
 export default function Payment() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  }, []);
 
   const quantity = parseInt(searchParams.get("quantity") || "1");
   const price = parseInt(searchParams.get("price") || "449");
@@ -51,6 +70,15 @@ export default function Payment() {
       toast({
         title: "Select Payment Method",
         description: "Please select a payment method to continue",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (typeof window.Razorpay === "undefined") {
+      toast({
+        title: "Payment Gateway Error",
+        description: "Could not connect to the payment gateway. Please try again later.",
         variant: "destructive",
       });
       return;
